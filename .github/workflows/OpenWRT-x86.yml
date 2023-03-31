@@ -1,8 +1,21 @@
 name: OpenWRT-X86
+
 on:
-  push:
-    branches:
-      - main
+  schedule:
+    - cron: 0 22 * * 0
+  workflow_dispatch:
+
+env:
+  DEVICE_NAME: X86  #设备名请用大写字母
+  DEVICE_IP: 192.168.125.12  #设备默认登陆地址
+  GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+  CORE_VER: https://raw.githubusercontent.com/vernesong/OpenClash/core/dev/core_version
+  CORE_TUN: https://github.com/vernesong/OpenClash/raw/core/dev/premium/clash-linux-amd64
+  CORE_DEV: https://github.com/vernesong/OpenClash/raw/core/dev/dev/clash-linux-amd64.tar.gz
+  CORE_MATE: https://github.com/vernesong/OpenClash/raw/core/dev/meta/clash-linux-amd64.tar.gz
+  
+permissions: write-all
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -29,7 +42,7 @@ jobs:
           git pull
           ./scripts/feeds update -a
           ./scripts/feeds install -a
-      - name: Update Plugins
+      - name: 更新插件
         run: |
           cd ./openwrt/package
           #PassWall
