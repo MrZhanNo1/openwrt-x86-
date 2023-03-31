@@ -29,6 +29,42 @@ jobs:
           git pull
           ./scripts/feeds update -a
           ./scripts/feeds install -a
+      - name: Update Plugins
+        run: |
+          cd ./openwrt/package
+          #PassWall
+          git clone --depth=1 --single-branch https://github.com/xiaorouji/openwrt-passwall.git
+          git clone --depth=1 --single-branch --branch "luci" https://github.com/xiaorouji/openwrt-passwall.git ./pw
+          #NAS Packages
+          git clone --depth=1 --single-branch https://github.com/linkease/nas-packages.git
+          #NAS Packages LUCI
+          git clone --depth=1 --single-branch https://github.com/linkease/nas-packages-luci.git
+          #iStore
+          git clone --depth=1 --single-branch https://github.com/linkease/istore.git
+          #Design Theme
+          #git clone --depth=1 --single-branch https://github.com/gngpp/luci-theme-design.git
+          #Design Config
+          #git clone --depth=1 --single-branch https://github.com/gngpp/luci-app-design-config.git
+          #OpenClash
+          git clone --depth=1 --single-branch --branch "dev" https://github.com/vernesong/OpenClash.git
+          #Argon Theme
+          git clone --depth=1 --single-branch --branch "18.06" https://github.com/jerrykuku/luci-theme-argon.git
+          #Argon Config
+          git clone --depth=1 --single-branch https://github.com/jerrykuku/luci-app-argon-config.git
+          #OpenClash Core
+          cd ./OpenClash/luci-app-openclash/root/etc/openclash
+          mkdir ./core && cd ./core
+          export TUN_VER=$(curl -sfL $CORE_VER | sed -n "2p")
+          curl -sfL -o ./tun.gz "$CORE_TUN"-"$TUN_VER".gz
+          gzip -d ./tun.gz
+          mv ./tun ./clash_tun
+          curl -sfL -o ./meta.tar.gz $CORE_MATE
+          tar -zxf ./meta.tar.gz
+          mv ./clash ./clash_meta
+          curl -sfL -o ./dev.tar.gz $CORE_DEV
+          tar -zxf ./dev.tar.gz
+          chmod +x ./clash*
+          rm -rf ./*.gz
       - name: 配置
         run: |
           cd openwrt
