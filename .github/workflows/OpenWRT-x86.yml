@@ -37,9 +37,7 @@ jobs:
           sudo -E timedatectl set-timezone "Asia/Shanghai"
       - name: 获取源码
         run: |
-          cd ~
           git clone --depth=1 https://github.com/openwrt/openwrt.git openwrt
-          cd ~
           git clone -b openwrt-22.03 https://github.com/openwrt/openwrt.git
           git pull
           ./scripts/feeds update -a
