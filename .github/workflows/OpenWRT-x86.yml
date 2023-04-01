@@ -101,7 +101,6 @@ jobs:
           CONFIG_PACKAGE_luci-app-ddns=n
           CONFIG_PACKAGE_luci-app-vlmcsd=n
           CONFIG_PACKAGE_luci-app-accesscontrol=n
-          EOF
       - name: 编译固件
         run: |
           cd openwrt
