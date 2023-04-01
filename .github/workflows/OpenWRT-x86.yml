@@ -71,7 +71,6 @@ jobs:
           rm -rf ./tmp && rm -rf ./.config*
           cat >> .config <<EOF
           # 设置设备
-          make menuconfig <<EOF
           CONFIG_TARGET_x86=y
           # 增加参数
           CONFIG_TARGET_KERNEL_PARTSIZE=64
@@ -104,6 +103,7 @@ jobs:
           CONFIG_PACKAGE_luci-app-vlmcsd=n
           CONFIG_PACKAGE_luci-app-accesscontrol=n
           EOF
+          make defconfig
       - name: 编译固件
         run: |
           cd ./openwrt
