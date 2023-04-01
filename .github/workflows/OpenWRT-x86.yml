@@ -103,7 +103,7 @@ jobs:
           CONFIG_PACKAGE_luci-app-accesscontrol=n
       - name: 编译固件
         run: |
-          cd openwrt
+          cd ./openwrt
           make -j$(nproc) download V=s
           make -j$(nproc) || make -j1 V=s
       - name: 上传固件
