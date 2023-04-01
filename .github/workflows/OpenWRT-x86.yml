@@ -68,6 +68,8 @@ jobs:
       - name: 配置
         run: |
           cd ./openwrt
+          rm -rf ./tmp && rm -rf ./.config*
+          cat >> .config <<EOF
           # 设置设备
           make menuconfig <<EOF
           CONFIG_TARGET_x86=y
