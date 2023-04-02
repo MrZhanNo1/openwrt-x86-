@@ -115,8 +115,31 @@ jobs:
           cd ./openwrt
           make -j$(nproc) download V=s
           #make -j$(nproc) || make -j1 V=s
-      - name: 上传固件
-        uses: actions/upload-artifact@v2  # 使用actions/upload-artifact@v2 Action上传编译好的固件到Github Actions的Artifact中，便于后续下载
+      - name: Package Firmware
+        run: |
+          cd ./lede
+          rm -rf $(find ./bin/targets/ -type f -iname "*.manifest" -or -type d -iname "packages")
+          cp -rf $(find ./bin/targets/ -type f -iname "*.*") ./bin/targets/
+          cp -rf ./.config ./bin/targets/config.txt
+          cd ./bin/targets
+          zip -qr Firmware.zip ./*.*
+      - name: Release Firmware
+        uses: softprops/action-gh-release@v1
         with:
-          name: OpenWrt_Firmware  # Artifact的名称，可自定义
-          path: ./openwrt/bin/targets  # 上传的目录，需要注意路径是否正确
+          tag_name: ${{env.DEVICE_NAME}}_Firmware_${{env.BUILD_DATE}}
+          files: ./lede/bin/targets/*.zip
+          body: |
+            集成argon主题，iStore商店，passwall，可玩性极高极度精简
+            地址：192.168.125.12 #因为自己测试，所以自己改回去就好
+            密码：password
+      - name: Delete Old Releases
+        uses: dev-drprasad/delete-older-releases@v0.2.1
+        with:
+          keep_latest: 6
+          delete_tags: true
+
+      - name: Delete Old Workflows
+        uses: Mattraks/delete-workflow-runs@v2
+        with:
+          retain_days: 1
+          keep_minimum_runs: 3
