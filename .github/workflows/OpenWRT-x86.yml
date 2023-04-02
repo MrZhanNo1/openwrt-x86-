@@ -40,8 +40,6 @@ jobs:
           git clone --depth=1 https://github.com/openwrt/openwrt.git openwrt
           git clone -b openwrt-22.03 https://github.com/openwrt/openwrt.git
           git pull
-          ./scripts/feeds update -a
-          ./scripts/feeds install -a
       - name: 更新插件
         run: |
           cd ./openwrt/package
@@ -65,6 +63,14 @@ jobs:
           #Argon Config
           git clone --depth=1 --single-branch https://github.com/jerrykuku/luci-app-argon-config.git
          
+         
+
+      - name: Update Feeds
+        run: |
+          cd ./opemwrt
+          ./scripts/feeds update -a
+          ./scripts/feeds install -a
+          
       - name: 配置
         run: |
           cd ./openwrt
