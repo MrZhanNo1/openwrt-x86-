@@ -117,7 +117,7 @@ jobs:
           #make -j$(nproc) || make -j1 V=s
       - name: Package Firmware
         run: |
-          cd ./lede
+          cd ./openwrt
           rm -rf $(find ./bin/targets/ -type f -iname "*.manifest" -or -type d -iname "packages")
           cp -rf $(find ./bin/targets/ -type f -iname "*.*") ./bin/targets/
           cp -rf ./.config ./bin/targets/config.txt
